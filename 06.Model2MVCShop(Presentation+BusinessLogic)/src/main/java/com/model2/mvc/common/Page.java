@@ -1,6 +1,6 @@
 package com.model2.mvc.common;
 
-
+// 깃 머지 테스트문구 추가
 //==> PageNavigation 을 위한 Bean
 public class Page {
 	
