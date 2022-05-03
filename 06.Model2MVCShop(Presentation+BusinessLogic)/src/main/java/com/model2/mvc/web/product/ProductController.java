@@ -60,9 +60,11 @@ public class ProductController {
 		
 		System.out.println("/getProduct.do");
 		//Business Logic
+		System.out.println("확인"+prodNo);
 		Product product = productService.getProduct(prodNo);
 		// Model 과 View 연결
 		model.addAttribute("product", product); 
+		
 		
 		return "forward:/product/getProductView.jsp";
 	}

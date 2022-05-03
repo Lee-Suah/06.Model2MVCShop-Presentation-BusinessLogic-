@@ -76,23 +76,12 @@
 </select>
 
  	
-	<!-- SQL : SELECT ROW Count 
-	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
 	  	FROM(	SELECT * 
-						FROM product
-						<if test="searchCondition != null">
-							<where>
-								<if test="searchCondition == 0 and searchKeyword !='' ">
-						 			prod_no = #{searchKeyword}
-								</if>
-								<if test="searchCondition == 1 and searchKeyword !='' ">
-						 		prod_name = #{searchKeyword}
-								</if>
-							</where>
-						</if> ) countTable						
+						FROM transaction
+					 ) countTable						
 	 </select>
-	 -->
 	 
 	   	<!-- SQL : UPDATE -->
 	<update id="updateTranCode" parameterType="purchase">

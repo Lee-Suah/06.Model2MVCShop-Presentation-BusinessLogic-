@@ -75,6 +75,7 @@ public class PurchaseController {
 		
 		product.setProTranCode("1");
 		productService.updateProduct(product);
+		
 		purchase.setTranCode("1");
 		purchase.setPurchaseProd(product);
 		
@@ -105,63 +106,90 @@ public class PurchaseController {
 	}
 	
 	
-//	
-//	
-//	@RequestMapping("/updateProductView.do")
-//	public String updateProductView( @RequestParam("prodNo") int prodNo , Model model ) throws Exception{
-//
-//		System.out.println("/updateProductView.do");
-//		//Business Logic
-//		Product product = productService.getProduct(prodNo);
-//		// Model 과 View 연결
-//		model.addAttribute("product", product); // 다시 확인,, 
-//		
-//		return "forward:/product/updateProductView.jsp";
-//	}
-//	
-//	@RequestMapping("/updateProduct.do")
-//	public String updateProduct( @ModelAttribute("product") Product product , Model model , HttpSession session) throws Exception{
-//		
-//		System.out.println("/updateProduct.do");
-//		//Business Logic
-//		productService.updateProduct(product);
-//		
-//		//String sessionId=((Product)session.getAttribute("user")).getUserId();
-//		//if(sessionId.equals(user.getUserId())){
-//		//	session.setAttribute("user", user);
-//		//}
-//		
-//		return "redirect:/getProduct.do?prodNo="+product.getProdNo();
-//	}
-//	
-//
+	@RequestMapping("/updatePurchaseView.do")
+	public ModelAndView updatePurchaseView(@RequestParam("tranNo") int tranNo) throws Exception{
+
+		System.out.println("/updateProductView.do");
+		
+		//Business Logic
+		Purchase purchase = purchaseService.getPurchase(tranNo);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("purchase", purchase);
+		modelAndView.setViewName("forward:/purchase/updatePurchaseView.jsp");
+		
+		return modelAndView;
+	}
+	
+
+	@RequestMapping("/updatePurchase.do")
+	public ModelAndView updatePurchase( @ModelAttribute("purchase") Purchase purchase,
+										@RequestParam("tranNo") int tranNo) throws Exception{
+		
+		System.out.println("/updatePurchase.do");
+		//Business Logic
+		purchaseService.updatePurchase(purchase);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/getPurchase.do?tranNo="+tranNo);
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping("/updateTranCode.do")
+	public ModelAndView updateTranCode( @RequestParam("tranCode") String tranCode,
+										@RequestParam("prodNo") int prodNo) throws Exception{
+		
+		System.out.println("/updateTranCode.do");
+		
+		Purchase purchase = new Purchase();
+		Product product = new Product();
+		
+		product.setProdNo(prodNo);
+		purchase.setPurchaseProd(product);
+		purchase.setTranCode(tranCode);
+		
+		//Business Logic
+		purchaseService.updateTranCode(purchase);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/listProduct.do?menu=manage");
+		
+		return modelAndView;
+	}
+	
+	
+
 	@RequestMapping("/listPurchase.do")
-	public ModelAndView listPurchase( @ModelAttribute("search") Search search , Model model , HttpServletRequest request) throws Exception{
+	public ModelAndView listPurchase( @ModelAttribute("search") Search search, HttpSession session, 
+									  HttpServletRequest request) throws Exception{
 		
 		System.out.println("/listPurchase.do");
-		
-		String menu = request.getParameter("menu");
 		
 		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
 		
+		session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		
 		// Business logic 수행
-		Map<String , Object> map=purchaseService.getPurchaseList(search);
+		Map<String , Object> map=purchaseService.getPurchaseList(search, user.getUserId());
 		
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결
-		model.addAttribute("list", map.get("list"));
-		model.addAttribute("resultPage", resultPage);
-		model.addAttribute("search", search);
 		
-		if(menu.equals("search")) {
-			return "forward:/product/listProductView.jsp"; // 상품 목록조회 ui 이동 
-		}else {
-			return "forward:/product/listSaleView.jsp"; //  상품관리 ui 로 이동 
-		}
+		ModelAndView modelAndView = new ModelAndView();
+		
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+		
+		modelAndView.setViewName("forward:/purchase/listPurchaseView.jsp");
+		return modelAndView;
+		
 	}
 }
