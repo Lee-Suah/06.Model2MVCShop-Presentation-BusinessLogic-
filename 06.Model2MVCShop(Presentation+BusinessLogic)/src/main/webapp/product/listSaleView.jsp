@@ -195,16 +195,16 @@
       <td align="left">
       
       
-      <c:if test="${product.getProTranCode().trim().equals('0') }">
+      <c:if test="${product.getProTranCode() eq '0' }">
       판매중
       </c:if>
-        <c:if test="${product.getProTranCode().trim().equals('1') }">
+        <c:if test="${product.getProTranCode() eq '1'}">
       구매완료<a href="/updateTranCode.do?prodNo=${product.prodNo}&tranCode=2">배송하기</a>
       </c:if>
-      <c:if test="${product.getProTranCode().trim().equals('2') }">
+      <c:if test="${product.getProTranCode() eq '2' }">
       배송중
       </c:if>
-      <c:if test="${product.getProTranCode().trim().equals('3') }">
+      <c:if test="${product.getProTranCode() eq '3' }">
       배송완료
       </c:if>
       
@@ -223,24 +223,6 @@
 		<td align="center">
 		   <input type="hidden" id="currentPage" name="currentPage" value=""/>
 		   
-		   	<%-- /////////////////////// EL / JSTL 적용으로 주석 처리 //////////////////////// 		
-			<% if( resultPage.getCurrentPage() <= resultPage.getPageUnit() ){ %>
-					◀ 이전
-			<% }else{ %>
-					<a href="javascript:fncGetProductList('<%=resultPage.getCurrentPage()-1%>')">◀ 이전</a>
-			<% } %>
-
-			<%	for(int i=resultPage.getBeginUnitPage();i<= resultPage.getEndUnitPage() ;i++){	%>
-					<a href="javascript:fncGetProductList('<%=i %>');"><%=i %></a>
-			<% 	}  %>
-	
-			<% if( resultPage.getEndUnitPage() >= resultPage.getMaxPage() ){ %>
-					이후 ▶
-			<% }else{ %>
-					<a href="javascript:fncGetProductList('<%=resultPage.getEndUnitPage()+1%>')">이후 ▶</a>
-			<% } %>
-				 /////////////////////// EL / JSTL 적용으로 주석 처리 //////////////////////// --%>
-				 
 				 	<jsp:include page="../common/pageNavigator.jsp"/>	
 		
     	</td>

@@ -149,24 +149,6 @@ User userVO = (User)session.getAttribute("user");
 		<td align="center">
 		   <input type="hidden" id="currentPage" name="currentPage" value=""/>
 		   
-		   <%-- /////////////////////// EL / JSTL 적용으로 주석 처리 //////////////////////// 	
-			<% if( resultPage.getCurrentPage() <= resultPage.getPageUnit() ){ %>
-					◀ 이전
-			<% }else{ %>
-					<a href="javascript:fncGetPurchaseList('<%=resultPage.getCurrentPage()-1%>')">◀ 이전</a>
-			<% } %>
-
-			<%	for(int i=resultPage.getBeginUnitPage();i<= resultPage.getEndUnitPage() ;i++){	%>
-					<a href="javascript:fncGetPurchaseList('<%=i %>');"><%=i %></a>
-			<% 	}  %>
-	
-			<% if( resultPage.getEndUnitPage() >= resultPage.getMaxPage() ){ %>
-					이후 ▶
-			<% }else{ %>
-					<a href="javascript:fncGetPurchaseList('<%=resultPage.getEndUnitPage()+1%>')">이후 ▶</a>
-			<% } %>
-			/////////////////////// EL / JSTL 적용으로 주석 처리 //////////////////////// --%>
-		
 		<jsp:include page="../common/pageNavigator.jsp"/>	
 		
     	</td>
